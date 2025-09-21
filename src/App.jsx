@@ -1,17 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { store } from './store/store';
 import Dashboard from './pages/Dashboard';
-import Login from './Pages/Login';
-import Register from './Pages/Register';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
+// Create ProtectedRoute as a separate component
+const ProtectedRoute = ({ children }) => {
+  const { token } = useSelector(state => state.auth);
+  return token ? children : <Navigate to="/login" />;
+};
 
 function App() {
-  const ProtectedRoute = ({ children }) => {
-    const { token } = useSelector(state => state.auth);
-    return token ? children : <Navigate to="/login" />;
-  };
-
   return (
     <Provider store={store}>
       <Router>
@@ -19,7 +20,14 @@ function App() {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } 
+            />
             <Route path="/" element={<Navigate to="/dashboard" />} />
           </Routes>
         </div>
@@ -28,4 +36,4 @@ function App() {
   );
 }
 
-  export default App;
+export default App;
