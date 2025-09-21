@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
 import { store } from './store/store';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './Pages/Dashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
 
